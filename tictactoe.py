@@ -112,9 +112,10 @@ then returns it
         # Re prompt while it is not a valid key or if place is already filled
         while key not in self.hash or \
                 self.board[self.hash[key][0]][self.hash[key][1]] != " ":
-            print("\nInvalid key, try again")
+            print("\nInvalid play or key, try again")
             self.display_board()
-            key = input("Player {}'s ({}) turn: ".format(cur_player, self.turn))
+            key = input("Player {}'s ({}) turn: "
+                        .format(cur_player, self.turn))
         return key
                 
     
@@ -146,14 +147,16 @@ def main():
     game.display_welcome_message()
     
     scores = {1:0,2:0}
-    cont = "y"
     starting_player = 1
-    cur_player = 1
+    
+    cont = "y"
+    
     while cont.lower() == "y":
         print("\n= NEW GAME =")
         game = TicTacToe()
         game.display_board()
         has_ended, winner = game.check_win()
+        cur_player = starting_player
         
         while not has_ended:
             user_input = game.take_input(cur_player)
@@ -165,10 +168,13 @@ def main():
         if result == "draw":
             print("\nTHAT'S A DRAW!")
         else:
-            print("\n"+result.upper()+" WON. CONGRATULATIONS!")
+            
             if result == "x":
+                print("\nPlayer "+str(starting_player)+" WON!")
                 scores[starting_player] += 1
             else:
+                print("\nPlayer "+str(opposite_player(starting_player))+\
+                      " WON!")
                 scores[opposite_player(starting_player)] += 1
         
         cont = input("\nDo you want a rematch? (y/n)")
